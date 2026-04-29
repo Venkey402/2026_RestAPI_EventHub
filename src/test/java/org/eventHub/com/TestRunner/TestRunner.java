@@ -4,8 +4,8 @@ package org.eventHub.com.TestRunner;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
-@CucumberOptions(features = "C:\\Users\\venke\\IdeaProjects\\Apr28_RestAssured_EventHub\\src\\test\\java\\org\\eventHub\\com\\Features",
+@CucumberOptions(features = "src/test/Resources/Features",
         glue = {"org.eventHub.com.StepDefs"},
-        plugin = {"pretty","html:/src/testOutput"})
+        plugin = {"pretty","html:/target/test-results/cucumber-report.html"})
 public class TestRunner extends AbstractTestNGCucumberTests {
 }
