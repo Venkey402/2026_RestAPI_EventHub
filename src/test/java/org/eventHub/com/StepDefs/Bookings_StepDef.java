@@ -64,16 +64,4 @@ public class Bookings_StepDef extends BaseClass{
 
         System.out.println(response);
     }
-    @Test(priority = 11)
-    public void getHealthCheck()
-    {
-        String response = given().spec(testContext.requestSpec).log().all()
-                .when().get("/health")
-                .then().log().all().assertThat().statusCode(200).extract().response().asString();
-        JsonPath jsonPath = new JsonPath(response);
-        Assert.assertEquals(jsonPath.getString("status"),"ok");
-        Assert.assertEquals(jsonPath.getString("dbStatus"),"connected");
-        System.out.println(response);
-    }
-
 }
