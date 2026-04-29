@@ -1,5 +1,6 @@
 package org.eventHub.com.StepDefs;
 
+import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
 import io.restassured.specification.RequestSpecification;
 import org.eventHub.com.POJOs.UserDetails;
@@ -22,8 +23,8 @@ public class HealthCheck_StepDef extends BaseClass{
         this.testContext=testContext;
     }
 
-    @Test(priority = 11)
-    public void getHealthCheck()
+    @Then("validate health check is fine")
+    public void validateHealthCheckIsFine()
     {
         String response = given().spec(testContext.requestSpec).log().all()
                 .when().get("/health")

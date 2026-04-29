@@ -27,9 +27,8 @@ public class Events_StepDef extends BaseClass{
         this.testContext=testContext;
     }
 
-    @Test(priority = 3)
-    public void getListOfEvents()
-    {
+    @And("get the list of events")
+    public void getTheListOfEvents() {
         String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
                 .when().get("/events")
                 .then().log().all().statusCode(200).extract().response().asString();
@@ -44,8 +43,8 @@ public class Events_StepDef extends BaseClass{
         }
     }
 
-    @Test(priority = 4)
-    public void createEvent()
+    @Then("create an event")
+    public void createAnEvent()
     {
         String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token).body(getEventDetails())
                 .when().post("/events")
@@ -56,8 +55,8 @@ public class Events_StepDef extends BaseClass{
         System.out.println(eventId);
     }
 
-    @Test(priority = 5)
-    public void getEvent()
+    @And("get the event details")
+    public void getTheEventDetails()
     {
         String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
                 .when().get("/events/"+eventId)
@@ -66,8 +65,8 @@ public class Events_StepDef extends BaseClass{
         System.out.println(response);
     }
 
-    @Test(priority = 6)
-    public void updatePriceOfEvent()
+    @Then("update the price of the event")
+    public void updateThePriceOfTheEvent()
     {
         String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token).body(udpatedEventDetails())
                 .when().put("/events/"+eventId)
@@ -76,8 +75,8 @@ public class Events_StepDef extends BaseClass{
         System.out.println(response);
     }
 
-    @Test(enabled = false)
-    public void deleteEvent()
+    @And("delete an event")
+    public void deleteAnEvent()
     {
         String response =  given().spec(testContext.requestSpec).header("Authorization","Bearer "+token)
                 .when().delete("/events/"+eventId)
