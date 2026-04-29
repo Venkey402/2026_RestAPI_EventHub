@@ -18,8 +18,7 @@ public class User_StepDef extends BaseClass{
     @Given("user registers to event hub")
     public void user_registers_to_event_hub()
     {
-        testContext.requestSpec = new RequestSpecBuilder().setBaseUri("https://api.eventhub.rahulshettyacademy.com/api").setContentType("application/json").build();
-        String response = given().spec(testContext.requestSpec).log().all().body(testContext.createUserDetailsPojo())
+       String response = given().spec(testContext.requestSpec).log().all().body(testContext.createUserDetailsPojo())
                 .when().post("/auth/register")
                 .then().log().all().assertThat().statusCode(201).extract().response().asString();
 

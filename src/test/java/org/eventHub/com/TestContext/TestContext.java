@@ -1,5 +1,6 @@
 package org.eventHub.com.TestContext;
 
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.eventHub.com.POJOs.BookingDetails;
@@ -17,10 +18,11 @@ public class TestContext {
     public BookingDetails bookingDetails;
     public RequestSpecification requestSpec;
     public int bookingId;
+
     public TestContext()
     {
+        requestSpec = new RequestSpecBuilder().setBaseUri("https://api.eventhub.rahulshettyacademy.com/api").setContentType("application/json").build();
     }
-
 
     public void createEmailPassword()
     {
