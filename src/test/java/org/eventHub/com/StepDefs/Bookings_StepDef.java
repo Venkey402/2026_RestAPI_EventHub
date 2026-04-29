@@ -1,5 +1,7 @@
 package org.eventHub.com.StepDefs;
 
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
 import io.restassured.specification.RequestSpecification;
 import org.eventHub.com.POJOs.UserDetails;
@@ -22,8 +24,8 @@ public class Bookings_StepDef extends BaseClass{
         this.testContext=testContext;
     }
 
-    @Test(priority = 7)
-    public void createBooking()
+    @Then("create a booking to an event")
+    public void createABookingToAnEvent()
     {
         String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token).body(setBookingDetails())
                 .when().post("/bookings")
@@ -35,8 +37,8 @@ public class Bookings_StepDef extends BaseClass{
         System.out.println(response);
     }
 
-    @Test(priority = 8)
-    public void listAllBookings()
+    @And("get list of all bookings")
+    public void getListOfAllBookings()
     {
         String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
                 .when().get("/bookings")
@@ -45,8 +47,8 @@ public class Bookings_StepDef extends BaseClass{
         System.out.println(response);
     }
 
-    @Test(priority = 9)
-    public void getABookingDetails()
+    @Then("get a single booking details")
+    public void getASingleBookingDetails()
     {
         String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
                 .when().get("/bookings/"+bookingId)
@@ -55,7 +57,7 @@ public class Bookings_StepDef extends BaseClass{
         System.out.println(response);
     }
 
-    @Test(priority = 10)
+    @And("delete a booking")
     public void deleteABooking()
     {
         String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
