@@ -2,20 +2,12 @@ package org.eventHub.com.StepDefs;
 
 import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
-import io.restassured.specification.RequestSpecification;
-import org.eventHub.com.POJOs.UserDetails;
 import org.eventHub.com.TestContext.TestContext;
 import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import static io.restassured.RestAssured.given;
 
-
 public class HealthCheck_StepDef extends BaseClass{
-    RequestSpecification requestSpec;
-    public String token;
-    public String userid;
-    UserDetails userDetails;
+
     TestContext testContext;
 
     public HealthCheck_StepDef(TestContext testContext)

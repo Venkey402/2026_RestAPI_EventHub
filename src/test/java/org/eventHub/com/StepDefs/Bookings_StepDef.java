@@ -14,10 +14,7 @@ import static io.restassured.RestAssured.given;
 
 public class Bookings_StepDef extends BaseClass{
     RequestSpecification requestSpec;
-    public String token;
-    public String userid;
-    UserDetails userDetails;
-    TestContext testContext;
+      TestContext testContext;
 
     public Bookings_StepDef(TestContext testContext)
     {
@@ -27,20 +24,20 @@ public class Bookings_StepDef extends BaseClass{
     @Then("create a booking to an event")
     public void createABookingToAnEvent()
     {
-        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token).body(setBookingDetails())
+        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+testContext.token).body(testContext.setBookingDetails())
                 .when().post("/bookings")
                 .then().log().all().assertThat().statusCode(201).extract().response().asString();
 
         JsonPath jsonPath = new JsonPath(response);
         Assert.assertEquals(jsonPath.getString("message"),"Booking confirmed!");
-        bookingId=jsonPath.getInt("data.id");
+        testContext.bookingId=jsonPath.getInt("data.id");
         System.out.println(response);
     }
 
     @And("get list of all bookings")
     public void getListOfAllBookings()
     {
-        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
+        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+testContext.token)
                 .when().get("/bookings")
                 .then().log().all().assertThat().statusCode(200).extract().response().asString();
 
@@ -50,8 +47,8 @@ public class Bookings_StepDef extends BaseClass{
     @Then("get a single booking details")
     public void getASingleBookingDetails()
     {
-        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
-                .when().get("/bookings/"+bookingId)
+        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+testContext.token)
+                .when().get("/bookings/"+ testContext.bookingId)
                 .then().log().all().assertThat().statusCode(200).extract().response().asString();
 
         System.out.println(response);
@@ -60,8 +57,8 @@ public class Bookings_StepDef extends BaseClass{
     @And("delete a booking")
     public void deleteABooking()
     {
-        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
-                .when().delete("/bookings/"+bookingId)
+        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+testContext.token)
+                .when().delete("/bookings/"+ testContext.bookingId)
                 .then().log().all().assertThat().statusCode(200).extract().response().asString();
 
         System.out.println(response);

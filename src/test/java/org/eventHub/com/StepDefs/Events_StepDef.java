@@ -1,25 +1,13 @@
 package org.eventHub.com.StepDefs;
 
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.path.json.JsonPath;
-import io.restassured.specification.RequestSpecification;
-import org.eventHub.com.POJOs.UserDetails;
 import org.eventHub.com.TestContext.TestContext;
-import org.eventHub.com.Utilities.JsonParser;
 import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import static io.restassured.RestAssured.given;
 
-
 public class Events_StepDef extends BaseClass{
-    RequestSpecification requestSpec;
-    public String token;
-    public String userid;
-    UserDetails userDetails;
     TestContext testContext;
 
     public Events_StepDef(TestContext testContext)
@@ -29,7 +17,7 @@ public class Events_StepDef extends BaseClass{
 
     @And("get the list of events")
     public void getTheListOfEvents() {
-        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
+        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+testContext.token)
                 .when().get("/events")
                 .then().log().all().statusCode(200).extract().response().asString();
         JsonPath jsonPath = new JsonPath(response);
@@ -46,20 +34,20 @@ public class Events_StepDef extends BaseClass{
     @Then("create an event")
     public void createAnEvent()
     {
-        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token).body(getEventDetails())
+        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+testContext.token).body(testContext.getEventDetails())
                 .when().post("/events")
                 .then().log().all().statusCode(201).extract().response().asString();
         JsonPath jsonPath = new JsonPath(response);
-        eventId = jsonPath.getInt("data.id");
+        testContext.eventId = jsonPath.getInt("data.id");
         Assert.assertEquals(jsonPath.getString("message"),"Event created successfully");
-        System.out.println(eventId);
+        System.out.println(testContext.eventId);
     }
 
     @And("get the event details")
     public void getTheEventDetails()
     {
-        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
-                .when().get("/events/"+eventId)
+        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+testContext.token)
+                .when().get("/events/"+ testContext.eventId)
                 .then().log().all().statusCode(200).extract().response().asString();
         JsonPath jsonPath = new JsonPath(response);
         System.out.println(response);
@@ -68,8 +56,8 @@ public class Events_StepDef extends BaseClass{
     @Then("update the price of the event")
     public void updateThePriceOfTheEvent()
     {
-        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token).body(udpatedEventDetails())
-                .when().put("/events/"+eventId)
+        String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+testContext.token).body(testContext.udpatedEventDetails())
+                .when().put("/events/"+ testContext.eventId)
                 .then().log().all().statusCode(200).extract().response().asString();
         JsonPath jsonPath = new JsonPath(response);
         System.out.println(response);
@@ -78,8 +66,8 @@ public class Events_StepDef extends BaseClass{
     @And("delete an event")
     public void deleteAnEvent()
     {
-        String response =  given().spec(testContext.requestSpec).header("Authorization","Bearer "+token)
-                .when().delete("/events/"+eventId)
+        String response =  given().spec(testContext.requestSpec).header("Authorization","Bearer "+testContext.token)
+                .when().delete("/events/"+ testContext.eventId)
                 .then().log().all().assertThat().statusCode(200).extract().response().asString();
         System.out.println(response);
     }
