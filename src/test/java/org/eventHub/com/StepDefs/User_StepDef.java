@@ -2,6 +2,7 @@ package org.eventHub.com.StepDefs;
 
 import static io.restassured.RestAssured.*;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.*;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.path.json.JsonPath;
 import io.restassured.specification.RequestSpecification;
@@ -12,14 +13,14 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
-public class EventHub_APITests extends BaseClass{
+public class User_StepDef extends BaseClass{
     RequestSpecification requestSpec;
     public String token;
     public String userid;
     UserDetails userDetails;
     TestContext testContext;
 
-    public EventHub_APITests(TestContext testContext)
+    public User_StepDef(TestContext testContext)
     {
         this.testContext=testContext;
     }
@@ -39,9 +40,8 @@ public class EventHub_APITests extends BaseClass{
         Assert.assertEquals("true",jsonParser.get(response,"success"));
     }
 
-    @Test(priority = 1)
-    public void loginUser()
-    {
+    @Then("login with user")
+    public void login_with_user() {
         String response = given().spec(testContext.requestSpec).log().all().body(createUserDetailsPojo())
                 .when().post("/auth/login")
                 .then().log().all().assertThat().statusCode(200).extract().response().asString();
@@ -50,8 +50,8 @@ public class EventHub_APITests extends BaseClass{
         Assert.assertEquals("true",jsonParser.get(response,"success"));
     }
 
-    @Test(dependsOnMethods = {"CreatesNewUser"},priority = 2)
-    public void validateToken()
+    @And("validate user token")
+    public void validateUserToken()
     {
         String response = given().spec(testContext.requestSpec).log().all().header("Authorization","Bearer "+token)
                 .when().get("/auth/me")
